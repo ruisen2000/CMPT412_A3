@@ -12,8 +12,8 @@ im1 = rgb2gray(im1);
 im2 = rgb2gray(im2);
 
 [r,c] = size(im2);
-pts1 = cart2hom(pts1);
 
+pts1 = cart2hom(pts1);
 
 l = F * pts1';
 s = sqrt(l(1)^2+l(2)^2);
@@ -21,6 +21,9 @@ if s==0
     error('Zero line vector in epipolarCorrespondance');
 end
 l = l/s;
+
+pts1 = hom2cart(pts1);
+pts1
 
 [~,nlines] = size(l);
 % each column of l is a line
@@ -43,18 +46,20 @@ for i = 1:nlines
     point = [-1 -1];  % the matching point for the current epipolar line
 
     for j = 1:n_pts
-        x_img = coords(j,2);  % x coordinate in cartesian is column in image coordinates
-        y_img = coords(j,1);
+        x_img = round(pts1(i,2));
+        y_img = round(pts1(i,1));
+        x_img2 = coords(j,2);  % x coordinate in cartesian is column in image coordinates
+        y_img2 = coords(j,1);
         v1 = im1(x_img-1:x_img+1, y_img-1:y_img+1);
         v1 = v1';
         v1 = v1(:);
-        v2 = im2(x_img-1:x_img+1, y_img-1:y_img+1);
+        v2 = im2(x_img2-1:x_img2+1, y_img2-1:y_img2+1);
         v2 = v2';
         v2 = v2(:);
         distance = sqrt(sum((v2 - v1) .^ 2));
         if distance < min_distance
             min_distance = distance;
-            point = [y_img x_img];
+            point = [y_img2 x_img2];
         end        
     end
     pts2 = [pts2; point];
