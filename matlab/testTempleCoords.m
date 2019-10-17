@@ -29,6 +29,8 @@ M2s = camera2(E);
 for i = 1:4
     P2 = K2*M2s(:,:,i);
     pts3d(:,:,i) = triangulate(P1, pts1, P2, p_ep );
+    x_proj = P1*(cart2hom(pts3d(:,:,i))');
+    error = mean(abs(hom2cart(x_proj') - pts1))
 end
 
 plot3(pts3d(:,1,1), pts3d(:,2,1), pts3d(:,3,1), '.')
