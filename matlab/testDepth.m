@@ -5,10 +5,15 @@ im2 = imread('../data/im2.png');
 im1 = rgb2gray(im1);
 im2 = rgb2gray(im2);
 load('rectify.mat', 'M1', 'M2', 'K1n', 'K2n', 'R1n', 'R2n', 't1n', 't2n');
+[rectIL, rectIR, bbL, bbR] = warp_stereo(im1, im2, M1, M2) ;
+[r,c] = size(im1);
+[~,cl] = size(rectIL);
+rectIL=rectIL(1:r,cl-c+1:cl);
+rectIR=rectIR(1:r,1:c);
 
 maxDisp = 20; 
 windowSize = 3;
-dispM = get_disparity(im1, im2, maxDisp, windowSize);
+dispM = get_disparity(rectIL, rectIR, maxDisp, windowSize);
 
 % --------------------  get depth map
 
