@@ -23,7 +23,6 @@ end
 l = l/s;
 
 pts1 = hom2cart(pts1);
-pts1
 
 [~,nlines] = size(l);
 % each column of l is a line
