@@ -1,1 +1,1 @@
-CMPT412_A3
+Assignment 3: 3D reconstruction from 2D images
